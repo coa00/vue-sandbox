@@ -1,17 +1,17 @@
-<template>
+`<template>
   <div id="app">
     <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Scheduler />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Scheduler from './components/Scheduler.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Scheduler
   }
 }
 </script>
