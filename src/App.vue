@@ -8,6 +8,8 @@
 <script>
 import Scheduler from './components/Scheduler.vue'
 
+
+
 export default {
   name: 'app',
   components: {

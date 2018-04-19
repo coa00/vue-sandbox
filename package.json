@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "moment": "^2.22.1",
+    "moment-range": "^4.0.0",
     "vue": "^2.5.13"
   },
   "devDependencies": {

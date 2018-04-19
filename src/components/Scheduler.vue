@@ -1,36 +1,34 @@
 <template>
   <!-- eslint-disable-next-line vue/max-attributes-per-line -->
   <div class="Scheduler">
-    <div class="room" v-for="(times, room) in scheduleData">
-      <div class="name">{{ room }}</div>
-      <div class="times">
-        <div class="item"  v-for="item in times">
-          <span>{{ item.start }}</span>
-          <span>{{ item.end }}</span>
-        </div>
-      </div>
+    <div v-for="(times, room) in scheduleData" >
+      <Room v-bind:range_start="range_start" v-bind:range_end="range_end" v-bind:room="room" v-bind:times="times"></Room>
     </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment';
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+import Room from './Room.vue';
+
+const moment = extendMoment(Moment);
 
 export default {
   name: 'Scheduler',
+  components: {
+    Room
+  },
   data: ()=>{
     return {
       range_start: '2018-04-17 10:00',
       range_end:'2018-04-17 22:00',
       scheduleData: {
-        roomA:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00'}],
-        roomB:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00'}],
-        roomC:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00'}],
+        roomA:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'red'}],
+        roomB:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'green'}],
+        roomC:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'blue'}],
       }
     }
-  },
-  created: function () {
-    console.log(moment(this.range_start));
   }
 }
 </script>
