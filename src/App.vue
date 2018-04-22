@@ -6,9 +6,7 @@
 </template>
 
 <script>
-import Scheduler from './components/Scheduler.vue'
-
-
+import Scheduler from './components/Scheduler.vue';
 
 export default {
   name: 'app',

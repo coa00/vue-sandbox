@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable-next-line vue/max-attributes-per-line -->
-  <div>
+  <div class="TimeGrid">
     <div v-bind:class="getClassName(times, index)">
       {{ getGridTime(index - 1) }}
     </div>
@@ -19,7 +19,7 @@
     props: ['index','range_start', 'times'],
     methods: {
       getGridTime: function (hour) {
-        return moment(this.range_start).add(hour,'hours').format("h:mm a");
+        return moment(this.range_start).add(hour,'hours').format("hh:mm a");
       },
       getClassName: function (){
         let className = '';
@@ -51,6 +51,10 @@
 </script>
 
 <style  lang="scss" scoped>
+  .TimeGrid{
+    padding: 10px;
+    width: 70px;
+  }
   .red{
     background-color: red;
   }

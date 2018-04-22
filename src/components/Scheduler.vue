@@ -1,18 +1,14 @@
 <template>
   <!-- eslint-disable-next-line vue/max-attributes-per-line -->
   <div class="Scheduler">
-    <div v-for="(times, room) in scheduleData" >
+    <div v-for="(times, room) in scheduleData" v-bind:key="room">
       <Room v-bind:range_start="range_start" v-bind:range_end="range_end" v-bind:room="room" v-bind:times="times"></Room>
     </div>
   </div>
 </template>
 
 <script>
-import Moment from 'moment';
-import { extendMoment } from 'moment-range';
 import Room from './Room.vue';
-
-const moment = extendMoment(Moment);
 
 export default {
   name: 'Scheduler',
@@ -36,6 +32,8 @@ export default {
 <style  lang="scss" scoped>
 .Scheduler{
   display: table;
+  table-layout: fixed;
+  width: 80%;
   .room{
     display: table-row;
     .name{
@@ -46,7 +44,6 @@ export default {
     .times{
       .item{
         border: rgba(0,0,0,0.1) solid 1px;
-        padding: 1rem;
         display: table-cell;
       }
 
