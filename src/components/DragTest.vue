@@ -27,12 +27,7 @@
 <script>
   import interact from 'interactjs';
 
-  function dragMoveListener (event) {
-    var target = event.target,
-      // keep the dragged position in the data-x/data-y attributes
-      x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-      y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
+  const setItemPos = (target, x, y)=>{
     // translate the element
     target.style.webkitTransform =
       target.style.transform =
@@ -41,40 +36,52 @@
     // update the posiion attributes
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
+
+    console.log(x, y);
+  };
+
+  function dragMoveListener (event) {
+    const target = event.target;
+    const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+    const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+    setItemPos(target, x, y);
   }
   export default {
     name: 'dragtest',
+    props: ['range_start', 'times'],
     mounted: function () {
       const gridWidth = this.$el.parentElement.querySelector('.item').clientWidth + 2;
       const gridHeight = this.$el.parentElement.querySelector('.item').clientHeight + 2;
-      console.log(gridWidth);
+      console.log('gridWidth', gridWidth);
 
-      interact('.resize-drag')
+      interact('.resize-drag').origin('parent')
         .draggable({
           onmove: dragMoveListener,
           snap: {
             targets: [
               interact.createSnapGrid({ x: gridWidth, y: 1 })
-            ]
+            ],
+            offset: 'startCoords'
           },
           restrict: {
-            restriction: 'parent',
+            restriction: '.resize-container',
             elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-          },
+          }
         })
         .resizable({
           snap: {
             targets: [
               interact.createSnapGrid({ x: gridWidth, y: 1 })
-            ]
+            ],
+            offset: 'startCoords'
           },
           // resize from all edges and corners
-          edges: { left: false, right: true, bottom: true, top: true },
+          edges: { left: false, right: true, bottom: false, top: false },
 
           // keep the edges inside the parent
           restrictEdges: {
             outer: 'parent',
-            endOnly: true,
+            elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
           },
 
           // minimum size
