@@ -108,7 +108,6 @@
 
             // translate when resizing from top or left edges
           x += event.deltaRect.left;
-
           y += event.deltaRect.top;
 
 
