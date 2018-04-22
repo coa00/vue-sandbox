@@ -4,7 +4,8 @@
   </div>
 </template>
 <style>
-  #drag-1{
+  .resize-drag{
+    box-sizing: border-box;
     position: absolute;
     top:0;
     left:0;
@@ -13,14 +14,6 @@
     background-color: rgba(200,0,0,0.5);
 
     color: white;
-
-    -webkit-transform: translate(0px, 0px);
-    transform: translate(0px, 0px);
-  }
-
-  #drag-me::before {
-    content: "#" attr(id);
-    font-weight: bold;
   }
 </style>
 
@@ -54,7 +47,7 @@
       const gridHeight = this.$el.parentElement.querySelector('.item').clientHeight + 2;
       console.log('gridWidth', gridWidth);
 
-      interact('.resize-drag').origin('parent')
+      interact(this.$el).origin('parent')
         .draggable({
           onmove: dragMoveListener,
           snap: {
@@ -69,6 +62,7 @@
           }
         })
         .resizable({
+          squareResize: true,
           snap: {
             targets: [
               interact.createSnapGrid({ x: gridWidth, y: 1 })
@@ -76,10 +70,11 @@
             offset: 'startCoords'
           },
           // resize from all edges and corners
-          edges: { left: false, right: true, bottom: false, top: false },
+          edges: { left: true, right: true, bottom: false, top: false },
 
           // keep the edges inside the parent
           restrictEdges: {
+            endOnly: true, // trueを指定した場合、ドロップした瞬間に範囲を超えているとき、範囲内に戻す
             outer: 'parent',
             elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
           },
@@ -95,14 +90,16 @@
           var target = event.target,
             x = (parseFloat(target.getAttribute('data-x')) || 0),
             y = (parseFloat(target.getAttribute('data-y')) || 0);
-
+          console.log('deltaRect', event.deltaRect);
           // update the element's style
           target.style.width  = event.rect.width + 'px';
           target.style.height = event.rect.height + 'px';
 
-          // translate when resizing from top or left edges
+            // translate when resizing from top or left edges
           x += event.deltaRect.left;
+
           y += event.deltaRect.top;
+
 
           target.style.webkitTransform = target.style.transform =
             'translate(' + x + 'px,' + y + 'px)';
