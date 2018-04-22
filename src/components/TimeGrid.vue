@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable-next-line vue/max-attributes-per-line -->
   <div class="TimeGrid">
-    <div v-bind:class="getClassName(times, index)">
+    <div>
       {{ getGridTime(index - 1) }}
     </div>
 
@@ -16,35 +16,11 @@
 
   export default {
     name: 'TimeGrid',
-    props: ['index','range_start', 'times'],
+    props: ['index','range_start', 'times', 'gridUnit'],
     methods: {
       getGridTime: function (hour) {
-        return moment(this.range_start).add(hour,'hours').format("hh:mm a");
-      },
-      getClassName: function (){
-        let className = '';
-        this.times.forEach((time)=>{
-          console.log(time.start);
-          const start = moment(time.start);
-          const end   = moment(time.end);
-          const target = moment(this.range_start).add(this.index,'hours')
-
-          console.log('start', start.format("h:mm a"));
-          console.log('end', end.format("h:mm a"));
-          console.log('target', target.format("h:mm a"));
-
-          console.log('isSameOrBefore', target.isSameOrBefore(start));
-          console.log('isSameOrBefore', target.isSameOrBefore(start));
-
-
-          if ( target.isSameOrBefore(end) && target.isSameOrAfter(start)){
-            console.log('match');
-            className = time.class;
-          }
-        });
-        console.log('className',className);
-        return className;
-
+        const addTime = hour * this.gridUnit;
+        return moment(this.range_start).add(addTime,'hours').format("HH:mm");
       }
     }
   }
@@ -52,8 +28,9 @@
 
 <style  lang="scss" scoped>
   .TimeGrid{
-    padding: 10px;
-    width: 70px;
+    font-size: 0.5rem;
+    padding: 5px;
+    width: 3rem;
   }
   .red{
     background-color: red;

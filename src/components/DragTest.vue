@@ -1,6 +1,6 @@
 <template>
   <div id="drag-1" class="resize-drag">
-    <p> You can drag one element </p>
+    スケジュール
   </div>
 </template>
 <style>
@@ -33,6 +33,10 @@
     console.log(x, y);
   };
 
+  const setWidth = (target, width)=>{
+    target.style.width  = width + 'px';
+  };
+
   function dragMoveListener (event) {
     const target = event.target;
     const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
@@ -41,13 +45,19 @@
   }
   export default {
     name: 'dragtest',
-    props: ['range_start', 'times'],
+    props: ['startIndex', 'endIndex','width'],
     mounted: function () {
-      const gridWidth = this.$el.parentElement.querySelector('.item').clientWidth + 2;
-      const gridHeight = this.$el.parentElement.querySelector('.item').clientHeight + 2;
+      console.log('el', this.$parent.$parent.$el.querySelector('.resize-container'));
+      const parent = this.$parent.$el.querySelector('.resize-container');
+      const item = document.querySelector('.item');
+      const gridWidth = item.clientWidth + 2;
+      const gridHeight = item.clientHeight + 2;
       console.log('gridWidth', gridWidth);
 
-      interact(this.$el).origin('parent')
+      setItemPos(this.$el, this.startIndex * gridWidth, 0);
+      setWidth(this.$el, (this.endIndex - this.startIndex) * gridWidth, 0);
+
+      interact(this.$el).origin(parent)
         .draggable({
           onmove: dragMoveListener,
           snap: {
@@ -57,7 +67,7 @@
             offset: 'startCoords'
           },
           restrict: {
-            restriction: '.resize-container',
+            restriction: parent,
             elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
           }
         })
@@ -75,7 +85,7 @@
           // keep the edges inside the parent
           restrictEdges: {
             endOnly: true, // trueを指定した場合、ドロップした瞬間に範囲を超えているとき、範囲内に戻す
-            outer: 'parent',
+            outer: parent,
             elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
           },
 
@@ -87,10 +97,11 @@
           inertia: true,
         })
         .on('resizemove', function (event) {
-          var target = event.target,
-            x = (parseFloat(target.getAttribute('data-x')) || 0),
+          const target = event.target;
+
+          let x = (parseFloat(target.getAttribute('data-x')) || 0),
             y = (parseFloat(target.getAttribute('data-y')) || 0);
-          console.log('deltaRect', event.deltaRect);
+
           // update the element's style
           target.style.width  = event.rect.width + 'px';
           target.style.height = event.rect.height + 'px';
