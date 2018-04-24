@@ -3,9 +3,8 @@
     スケジュール
   </div>
 </template>
-<style>
+<style lang="scss" scoped>
   .resize-drag{
-    box-sizing: border-box;
     position: absolute;
     top:0;
     left:0;
@@ -19,18 +18,23 @@
 
 <script>
   import interact from 'interactjs';
+  import Prefixer from 'inline-style-prefixer';
+
+  const prefixer = new Prefixer();
 
   const setItemPos = (target, x, y)=>{
     // translate the element
-    target.style.webkitTransform =
-      target.style.transform =
-        'translate(' + x + 'px, ' + y + 'px)';
+    const addStyle = {
+      transform: `translate(${x}px, ${y}px)`
+    };
+
+    const prefixedStyle = prefixer.prefix(addStyle);
+
+    Object.assign(target.style, prefixedStyle);
 
     // update the posiion attributes
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
-
-    console.log(x, y);
   };
 
   const setWidth = (target, width)=>{
@@ -47,12 +51,11 @@
     name: 'dragtest',
     props: ['startIndex', 'endIndex','width'],
     mounted: function () {
-      console.log('el', this.$parent.$parent.$el.querySelector('.resize-container'));
+      console.log(this);
       const parent = this.$parent.$el.querySelector('.resize-container');
       const item = document.querySelector('.item');
       const gridWidth = item.clientWidth + 2;
       const gridHeight = item.clientHeight + 2;
-      console.log('gridWidth', gridWidth);
 
       setItemPos(this.$el, this.startIndex * gridWidth, 0);
       setWidth(this.$el, (this.endIndex - this.startIndex) * gridWidth, 0);
@@ -116,7 +119,6 @@
 
           target.setAttribute('data-x', x);
           target.setAttribute('data-y', y);
-          target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height);
         });
     }
   }
