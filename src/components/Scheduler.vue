@@ -46,7 +46,6 @@ export default {
 <style  lang="scss" scoped>
 .Scheduler{
   display: table;
-  text-align: center;
 }
 
 </style>

@@ -110,7 +110,6 @@
     }
     .item{
       vertical-align: middle;
-      width: 300px;
       border: solid 1px rgba(0,0,0,0.1);
       display: table-cell;
     }
