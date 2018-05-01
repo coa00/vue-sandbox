@@ -1,6 +1,6 @@
 <template>
-  <div id="drag-1" class="resize-drag">
-    スケジュール
+  <div class="resize-drag">
+    <slot></slot>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -49,7 +49,7 @@
   }
   export default {
     name: 'dragtest',
-    props: ['startIndex', 'endIndex','width'],
+    props: ['startIndex', 'endIndex','width', 'colorclass'],
     mounted: function () {
       console.log(this);
       const parent = this.$parent.$el.querySelector('.resize-container');
@@ -59,6 +59,8 @@
 
       setItemPos(this.$el, this.startIndex * gridWidth, 0);
       setWidth(this.$el, (this.endIndex - this.startIndex) * gridWidth, 0);
+
+      this.$el.classList.add(this.colorclass);
 
       interact(this.$el).origin(parent)
         .draggable({

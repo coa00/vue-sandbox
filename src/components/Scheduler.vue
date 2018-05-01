@@ -20,9 +20,13 @@ export default {
       range_start: '2018-04-17 10:00',
       range_end:'2018-04-17 22:00',
       scheduleData: {
-        roomA:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'red'}],
-        roomB:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'green'}],
-        roomC:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'blue'}],
+        roomA:[{
+          start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'red',customer:'田中',doctor:'ブラックジャック'
+        },{
+          start:'2018-04-17 15:00', end:'2018-04-17 17:00', class:'green',customer:'金本',doctor:'ブラックジャック'
+        }],
+        roomB:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'green',customer:'やまだ',doctor:'ホワイトジャック'}],
+        roomC:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'blue',customer:'鈴木',doctor:'イエロージャック'}],
       }
     }
   }

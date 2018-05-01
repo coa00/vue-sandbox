@@ -9,7 +9,9 @@
         </div>
       </div>
       <div class="times" v-for="(time) in times" v-bind:key="time.key">
-        <DragTest v-bind:startIndex="getStartGrid(time.start)" v-bind:endIndex="getEndGrid(time.end)" v-bind:width="getWidth(time.start, time.end)"></DragTest>
+        <DragTest v-bind:startIndex="getStartGrid(time.start)" v-bind:colorclass="time.class" class="" v-bind:endIndex="getEndGrid(time.end)" v-bind:width="getWidth(time.start, time.end)">
+          <span class="time-content">患者: {{time.customer}} 医者:{{time.doctor}}</span>
+        </DragTest>
       </div>
 
     </div>
@@ -32,7 +34,7 @@
     },
     props: ['room', 'times','range_start', 'range_end'],
     created:  function(){
-      this.GRID_UNIT = 0.5;
+      this.GRID_UNIT = 0.25;
 
       // from, to から時間を求める
       const fromDate = moment(this.range_start);
@@ -71,6 +73,9 @@
 </script>
 
 <style  lang="scss" scoped>
+  .time-content{
+    font-size: 0.4rem;
+  }
   .room{
     .resize-container {
       position: relative;
@@ -87,6 +92,20 @@
     }
 
     display: table-row;
+
+    .resize-drag{
+      &.red{
+        background-color: rgba(200,0,0,0.5);
+      }
+      &.blue{
+        background-color: rgba(0,0,200,0.5);
+      }
+
+      &.green{
+        background-color: rgba(0,180,0,0.5);
+      }
+
+    }
     .name{
       border:  solid 1px rgba(0,0,0,0.1);
       display: table-cell;

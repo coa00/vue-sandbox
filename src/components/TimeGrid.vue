@@ -28,7 +28,7 @@
 
 <style  lang="scss" scoped>
   .TimeGrid{
-    font-size: 0.5rem;
+    font-size: 0.1rem;
     padding-top: 5px;
     padding-bottom: 5px;
     width: 2rem;
