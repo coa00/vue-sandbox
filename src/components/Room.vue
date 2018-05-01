@@ -20,7 +20,7 @@
 <script>
   import moment from 'moment';
   import TimeGrid from './TimeGrid.vue';
-  import DragTest from './DragTest.vue';
+  import DragTest from './Draggable.vue';
 
 
 
