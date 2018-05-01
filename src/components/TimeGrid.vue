@@ -1,9 +1,9 @@
 <template>
   <!-- eslint-disable-next-line vue/max-attributes-per-line -->
   <div class="TimeGrid">
-    <div>
+    <span v-bind:class="{ hidden: !showTime }">
       {{ getGridTime(index - 1) }}
-    </div>
+    </span>
 
   </div>
 </template>
@@ -16,7 +16,10 @@
 
   export default {
     name: 'TimeGrid',
-    props: ['index','range_start', 'times', 'gridUnit'],
+    props: ['showTime','index','range_start', 'times', 'gridUnit','hidden'],
+    created:  function(){
+      console.log('showTime', this.showTime);
+    },
     methods: {
       getGridTime: function (hour) {
         const addTime = hour * this.gridUnit;
@@ -27,11 +30,8 @@
 </script>
 
 <style  lang="scss" scoped>
-  .TimeGrid{
-    font-size: 0.1rem;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    width: 2rem;
+  .hidden{
+    visibility: hidden;
   }
   .red{
     background-color: red;

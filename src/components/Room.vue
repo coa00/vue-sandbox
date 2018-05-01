@@ -1,14 +1,12 @@
 <template>
   <!-- eslint-disable-next-line vue/max-attributes-per-line -->
-  <tr class="room">
+  <div class="room">
     <div class="name">{{ room }}</div>
     <div class="resize-container">
-      <div class="times">
-        <div class="item" v-for="number in gridCount" v-bind:key="number">
-          <TimeGrid v-bind:grid-unit="GRID_UNIT" v-bind:times="times" v-bind:index="number" v-bind:range_start="range_start" v-bind:range_end="range_end"></TimeGrid>
-        </div>
+      <div class="item" v-for="number in gridCount" v-bind:key="number">
+        <TimeGrid v-bind:show-time="times.showTime" v-bind:grid-unit="GRID_UNIT" v-bind:times="times" v-bind:index="number" v-bind:range_start="range_start" v-bind:range_end="range_end"></TimeGrid>
       </div>
-      <div class="times" v-for="(time) in times" v-bind:key="time.key">
+      <div class="times" v-for="(time) in times.timeData" v-bind:key="time.key">
         <DragTest v-bind:startIndex="getStartGrid(time.start)" v-bind:colorclass="time.class" class="" v-bind:endIndex="getEndGrid(time.end)" v-bind:width="getWidth(time.start, time.end)">
           <span class="time-content">患者: {{time.customer}} 医者:{{time.doctor}}</span>
         </DragTest>
@@ -16,7 +14,7 @@
 
     </div>
 
-  </tr>
+  </div>
 </template>
 
 <script>
@@ -73,10 +71,9 @@
 </script>
 
 <style  lang="scss" scoped>
-  .time-content{
-    font-size: 0.4rem;
-  }
   .room{
+    display: table-row;
+
     .resize-container {
       position: relative;
       width: 100%;
@@ -91,7 +88,6 @@
       }
     }
 
-    display: table-row;
 
     .resize-drag{
       &.red{
@@ -107,16 +103,19 @@
 
     }
     .name{
-      border:  solid 1px rgba(0,0,0,0.1);
+      vertical-align: middle;
+      width: 60px;
+      display: table-cell;
+      border: solid 1px rgba(0,0,0,0.1);
+    }
+    .item{
+      vertical-align: middle;
+      width: 300px;
+      border: solid 1px rgba(0,0,0,0.1);
       display: table-cell;
     }
-    .times{
-      .item{
-        box-sizing: border-box;
-        border: solid 1px rgba(0,0,0,0.1);
-        display: table-cell;
-      }
-
+    .time-content{
+      font-size: 0.4rem;
     }
   }
 
