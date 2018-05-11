@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable-next-line vue/max-attributes-per-line -->
   <div class="TimeGrid">
-    <span v-bind:class="{ hidden: !showTime }">
+    <span v-bind:class="{ hidden: (!showTime || decimating) }">
       {{ getGridTime(index - 1) }}
     </span>
 
@@ -9,38 +9,47 @@
 </template>
 
 <script>
-  import Moment from 'moment';
-  import { extendMoment } from 'moment-range';
+import moment from "moment";
 
-  const moment = extendMoment(Moment);
+export default {
+  name: "TimeGrid",
+  props: ["showTime", "index", "range_start", "times", "gridUnit", "hidden"],
+  data: function() {
+    return {
+      decimating: false
+    };
+  },
+  methods: {
+    getGridTime: function(hour) {
+      const addTime = hour * this.gridUnit;
+      const remainder = addTime % 0.5;
 
-  export default {
-    name: 'TimeGrid',
-    props: ['showTime','index','range_start', 'times', 'gridUnit','hidden'],
-    created:  function(){
-      console.log('showTime', this.showTime);
-    },
-    methods: {
-      getGridTime: function (hour) {
-        const addTime = hour * this.gridUnit;
-        return moment(this.range_start).add(addTime,'hours').format("HH:mm");
+      if (remainder > 0) {
+        this.decimating = true;
       }
+
+      return moment(this.range_start)
+        .add(addTime, "hours")
+        .format("HH:mm");
     }
   }
+};
 </script>
 
 <style  lang="scss" scoped>
-  .hidden{
-    visibility: hidden;
-  }
-  .red{
-    background-color: red;
-  }
-  .blue{
-    background-color: blue;
-  }
-  .green{
-    background-color: green;
-  }
-
+.TimeGrid {
+  font-size: 0.5rem;
+}
+.hidden {
+  visibility: hidden;
+}
+.red {
+  background-color: red;
+}
+.blue {
+  background-color: blue;
+}
+.green {
+  background-color: green;
+}
 </style>

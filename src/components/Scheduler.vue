@@ -8,44 +8,75 @@
 </template>
 
 <script>
-import Room from './Room.vue';
+import Room from "./Room.vue";
 
 export default {
-  name: 'Scheduler',
+  name: "Scheduler",
   components: {
     Room
   },
-  data: ()=>{
+  data: () => {
     return {
-      range_start: '2018-04-17 10:00',
-      range_end:'2018-04-17 22:00',
+      range_start: "2018-04-17 10:00",
+      range_end: "2018-04-17 22:00",
       scheduleData: {
-        ' ':{
+        " ": {
           showTime: true,
-          timeData:[]
+          timeData: []
         },
-        roomA:{
-          timeData:[{
-            start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'red',customer:'田中',doctor:'ブラックジャック'
-          },{
-            start:'2018-04-17 15:00', end:'2018-04-17 17:00', class:'green',customer:'金本',doctor:'ブラックジャック'
-          }]
+        "CS room1": {
+          timeData: [
+            {
+              start: "2018-04-17 11:00",
+              end: "2018-04-17 13:00",
+              class: "red",
+              customer: "田中",
+              doctor: "ブラックジャック"
+            },
+            {
+              start: "2018-04-17 15:00",
+              end: "2018-04-17 17:00",
+              class: "green",
+              customer: "金本",
+              doctor: "ブラックジャック"
+            }
+          ]
         },
-        roomB:{
-          timeData:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'green',customer:'やまだ',doctor:'ホワイトジャック'}]
+        "CS room2": {
+          timeData: [
+            {
+              start: "2018-04-17 11:00",
+              end: "2018-04-17 13:00",
+              class: "green",
+              customer: "やまだ",
+              doctor: "ホワイトジャック"
+            }
+          ]
         },
-        roomC:{
-          timeData:[{start:'2018-04-17 11:00', end:'2018-04-17 13:00', class:'blue',customer:'鈴木',doctor:'イエロージャック'}]
+        "CS room3": {
+          timeData: [
+            {
+              start: "2018-04-17 11:00",
+              end: "2018-04-17 13:00",
+              class: "blue",
+              customer: "鈴木",
+              doctor: "イエロージャック"
+            }
+          ]
         },
+        "CS room4": {},
+        "CS room5": {},
+        "CS room6": {},
+        "CP room1": {},
+        "CP room2": {}
       }
-    }
+    };
   }
-}
+};
 </script>
 
 <style  lang="scss" scoped>
-.Scheduler{
+.Scheduler {
   display: table;
 }
-
 </style>

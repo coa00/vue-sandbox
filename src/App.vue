@@ -6,19 +6,24 @@
 </template>
 
 <script>
-import Scheduler from './components/Scheduler.vue';
+import Scheduler from "./components/Scheduler.vue";
+import Vue from "vue";
+import VueMaterial from "vue-material";
+import "vue-material/dist/vue-material.min.css";
+
+Vue.use(VueMaterial);
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     Scheduler
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
