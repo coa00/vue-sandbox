@@ -1,22 +1,25 @@
 `<template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <Scheduler />
+    <FreeDrawing mode="eraser" image-url="http://fr.ubergizmo.com/wp-content/uploads/2012/10/Yoda-300x300.jpg"/>
   </div>
 </template>
 
 <script>
 import Scheduler from "./components/Scheduler.vue";
+import FreeDrawing from "./components/FreeDrawing.vue";
 import Vue from "vue";
 import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
+import VueKonva from "vue-konva";
 
+Vue.use(VueKonva);
 Vue.use(VueMaterial);
 
 export default {
   name: "app",
   components: {
-    Scheduler
+    Scheduler,
+    FreeDrawing
   }
 };
 </script>
