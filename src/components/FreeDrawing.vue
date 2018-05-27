@@ -7,18 +7,20 @@
 
 <script>
 import Konva from "konva";
-import log from "loglevel";
 
 export default {
   name: "FreeDrawing",
   props: {
+    // ブラシか、消しゴムかのモードを設定
     mode: {
       type: String,
       default: "brush"
     },
+    //読み込みイメージ
     imageUrl: {
       type: String
     },
+    //キャンバスのサイズ
     width: {
       type: Number,
       default: 400
@@ -27,6 +29,8 @@ export default {
       type: Number,
       default: 300
     },
+
+    //ペイントのスタイル
     paintStyle: {
       type: Object,
       default: () => {
@@ -36,6 +40,8 @@ export default {
         };
       }
     },
+
+    //枠のスタイル
     bgConfig: {
       type: Object,
       default: () => {
@@ -63,7 +69,10 @@ export default {
       height: this.height
     });
 
+    //背景レイヤー
     this.bgLayer = new Konva.Layer();
+
+    //書き込みレイヤー
     this.drawingLayer = new Konva.Layer();
 
     this.stage.add(this.bgLayer);
@@ -109,6 +118,7 @@ export default {
     this.drawingLayer.add(this.drawScope);
     this.stage.draw();
 
+    //イベントの設定
     this.stage.on("contentMousedown.proto", this.mousedown);
     this.stage.on("contentTouchstart.proto", this.mousedown);
 
@@ -149,19 +159,19 @@ export default {
 
       this.context.beginPath();
 
-      var localPos = {
+      let localPos = {
         x: this.lastPointerPosition.x - this.backGround.x(),
         y: this.lastPointerPosition.y - this.backGround.y()
       };
 
-      log.debug("move localPos:", localPos);
-
       this.context.moveTo(localPos.x, localPos.y);
-      var pos = this.stage.getPointerPosition();
+
+      const pos = this.stage.getPointerPosition();
       localPos = {
         x: pos.x - this.backGround.x(),
         y: pos.y - this.backGround.y()
       };
+
       this.context.lineTo(localPos.x, localPos.y);
       this.context.closePath();
       this.context.stroke();
@@ -169,6 +179,7 @@ export default {
       this.lastPointerPosition = pos;
       this.drawingLayer.draw();
 
+      //親コンポーネントに dataUrl を送る
       this.$emit("data-url", this.canvas.toDataURL());
     }
   }
