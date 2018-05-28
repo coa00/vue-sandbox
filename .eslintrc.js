@@ -5,22 +5,26 @@ module.exports = {
     ecmaVersion: 2016,
     sourceType: "module"
   },
-  extends: ["prettier", "prettier/standard", "plugin:vue/essential"],
-  plugins: ["vue", "prettier"],
+  extends: ['eslint:recommended',"prettier", "prettier/standard", "plugin:vue/essential"],
+  plugins: ["vue", "prettier","mocha", "jest"],
   env: {
+    "mocha": true,
+    "jest": true,
     browser: true,
     node: true,
     es6: true
   },
+  "globals": {
+    "page": true
+  },
   rules: {
     "prettier/prettier": "error",
-    "no-undef": 1,
-    "global-strict": 0,
-    "no-underscore-dangle": 0,
-    "no-console": 1,
-    "no-unused-vars": 1,
-    "no-unreachable": 1,
-    "no-alert": 0,
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
+    "no-irregular-whitespace": 0,
+    "mocha/no-exclusive-tests": "error",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
   }
 };
