@@ -1,6 +1,12 @@
 `<template>
   <div id="app">
+    <h2>FreeDrawingTest</h2>
+
     <FreeDrawingTest />
+
+    <h2>Scheduler</h2>
+
+    <Scheduler />
   </div>
 </template>
 

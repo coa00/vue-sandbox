@@ -1,11 +1,16 @@
 <template>
   <div ref="container">
-    <canvas ref="canvas"></canvas>
+    <canvas v-bind:width="width" v-bind:height="height" ref="canvas"></canvas>
   </div>
 
 </template>
-
+<style scoped>
+div {
+  display: inline-block;
+}
+</style>
 <script>
+import log from "loglevel";
 import Konva from "konva";
 
 export default {
@@ -19,6 +24,17 @@ export default {
     //読み込みイメージ
     imageUrl: {
       type: String
+    },
+    imageStyle: {
+      type: Object,
+      default: () => {
+        return {
+          x: 0,
+          y: 0,
+          width: undefined,
+          height: undefined
+        };
+      }
     },
     //キャンバスのサイズ
     width: {
@@ -37,18 +53,6 @@ export default {
         return {
           color: "#333",
           lineWidth: 5
-        };
-      }
-    },
-
-    //枠のスタイル
-    bgConfig: {
-      type: Object,
-      default: () => {
-        return {
-          stroke: "#333",
-          x: 0,
-          y: 0
         };
       }
     }
@@ -78,20 +82,7 @@ export default {
     this.stage.add(this.bgLayer);
     this.stage.add(this.drawingLayer);
 
-    this.backGround = new Konva.Image({
-      image: this.canvas,
-      x: 0,
-      y: 0
-    });
-
-    this.drawScope = new Konva.Image(
-      Object.assign(
-        {
-          image: this.canvas
-        },
-        this.bgConfig
-      )
-    );
+    this.drawScope = new Konva.Image({ image: this.canvas });
 
     if (this.imageUrl) {
       const imageObj = new Image();
@@ -99,22 +90,24 @@ export default {
       imageObj.addEventListener("load", () => {
         const loadPaintImg = new Konva.Image(
           {
-            x: this.backGround.x(),
-            y: this.backGround.y(),
+            x: this.imageStyle.x,
+            y: this.imageStyle.y,
             image: imageObj,
-            width: 106,
-            height: 118
+            width: this.imageStyle.width,
+            height: this.imageStyle.height
           },
           false
         );
         // add the shape to the layer
         this.bgLayer.add(loadPaintImg);
         this.stage.draw();
+        //親コンポーネントに dataUrl を送る
+        this.$emit("data-url", this.stage.toDataURL());
       });
       imageObj.src = this.imageUrl;
+      imageObj.setAttribute("crossOrigin", "anonymous");
     }
-
-    this.bgLayer.add(this.backGround);
+    // this.bgLayer.add(this.backGround);
     this.drawingLayer.add(this.drawScope);
     this.stage.draw();
 
@@ -123,7 +116,7 @@ export default {
     this.stage.on("contentTouchstart.proto", this.mousedown);
 
     this.stage.on("contentMouseup.proto", this.mouseup);
-    this.stage.on("contentTouchend,.proto", this.mouseup);
+    this.stage.on("contentTouchend.proto", this.mouseup);
 
     this.stage.on("contentMousemove.proto", this.mousemove);
     this.stage.on("contentTouchmove.proto", this.mousemove);
@@ -140,13 +133,22 @@ export default {
   },
   methods: {
     mousedown: function() {
+      log.debug("mousedown");
       this.isPaint = true;
       this.lastPointerPosition = this.stage.getPointerPosition();
+
+      log.debug(
+        "this.lastPointerPosition:",
+        this.lastPointerPosition.x,
+        this.lastPointerPosition.y
+      );
     },
     mouseup: function() {
+      log.debug("mouseup");
       this.isPaint = false;
     },
     mousemove: function() {
+      log.debug("mousemove");
       if (!this.isPaint) {
         return;
       }
@@ -159,17 +161,19 @@ export default {
 
       this.context.beginPath();
 
+      log.debug("drawinLayer:", this.drawingLayer.x(), this.drawingLayer.y());
+
       let localPos = {
-        x: this.lastPointerPosition.x - this.backGround.x(),
-        y: this.lastPointerPosition.y - this.backGround.y()
+        x: this.lastPointerPosition.x - this.drawingLayer.x(),
+        y: this.lastPointerPosition.y - this.drawingLayer.y()
       };
 
       this.context.moveTo(localPos.x, localPos.y);
 
       const pos = this.stage.getPointerPosition();
       localPos = {
-        x: pos.x - this.backGround.x(),
-        y: pos.y - this.backGround.y()
+        x: pos.x - this.drawingLayer.x(),
+        y: pos.y - this.drawingLayer.y()
       };
 
       this.context.lineTo(localPos.x, localPos.y);
@@ -179,8 +183,10 @@ export default {
       this.lastPointerPosition = pos;
       this.drawingLayer.draw();
 
+      const dataUrl = this.stage.toDataURL();
+
       //親コンポーネントに dataUrl を送る
-      this.$emit("data-url", this.canvas.toDataURL());
+      this.$emit("data-url", dataUrl);
     }
   }
 };
